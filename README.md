@@ -1,1 +1,44 @@
 # Indikraft-Internship
+# 📌 Product Rating Predictor (Beginner Friendly)
+# -----------------------------------------------
+# This program will:
+# 1. Load product rating data from a CSV file
+# 2. Train a model to predict ratings
+# 3. Test the model with sample input
+
+# Step 1: Install dependencies (Run this only once in terminal)
+# pip install pandas scikit-learn
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# Step 2: Load your CSV data
+# Your CSV should have columns like:
+# product_id, price, number_of_reviews, average_review_length, rating
+data = pd.read_csv("product_ratings.csv")
+
+# Step 3: Choose features (X) and target (y)
+X = data[['price', 'number_of_reviews', 'average_review_length']]
+y = data['rating']
+
+# Step 4: Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Step 5: Create and train the model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Step 6: Predict ratings for the test data
+y_pred = model.predict(X_test)
+
+# Step 7: Check accuracy using Mean Squared Error
+mse = mean_squared_error(y_test, y_pred)
+print(f"Model Mean Squared Error: {mse:.2f}")
+
+# Step 8: Try predicting a new product's rating
+# Example: Price=500, Reviews=120, Avg Review Length=50 words
+new_product = [[500, 120, 50]]
+predicted_rating = model.predict(new_product)
+print(f"Predicted Rating for new product: {predicted_rating[0]:.2f}")
